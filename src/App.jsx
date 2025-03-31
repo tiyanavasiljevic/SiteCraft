@@ -11,28 +11,23 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
-  return (
-    <>
-    <div className="App">
-    <BrowserRouter>
-    <Routes>
-
-      <Route path= '/' element={<MainLayout></MainLayout>}>
-
-      <Route path= '/Dashboard' element={<Dashboard></Dashboard>}></Route>
-
-      <Route path= '/Chat' element={<Chat></Chat>}></Route>
-
-      <Route path= '/SendMail' element={<SendMail></SendMail>}></Route>
       
-      <Route path= '/LogIn' element={<LogIn></LogIn>}></Route>
 
-      <Route path= '/Register' element={<Register></Register>}></Route>
-      </Route>
+    return (
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route path="Dashboard" element={<Dashboard />} />
+            <Route path="Chat" element={<Chat />} />
+            <Route path="SendMail" element={<SendMail />} />
+            <Route path="Login" element={<LogIn />} />
+            <Route path="Register" element={<Register />} />
+          </Route>
     </Routes>
     </BrowserRouter>
 </div>
-    </>
+    
   )
 }
 
