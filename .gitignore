@@ -57,5 +57,6 @@ MARIJANA/
 TIKI/
 frontend/
 pf/
+.env
 
 

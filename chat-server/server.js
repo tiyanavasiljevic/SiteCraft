@@ -2,16 +2,27 @@
 const express = require('express'); //IMPORT FOR EXPRESS
 const http = require('http'); //IMPORT FOR HTTP MODULE
 const socketIo = require('socket.io'); //IMPORT FOR SOCKET.IO FOR REAL TIME COMMUNICATION
+const cors = require('cors'); // IMPORT CORS
+require('dotenv').config();
+require('./mongodb');
 
 
 //INITIALIZATION
 const app = express();
 
+
+app.use(cors());
+
 //CREATE HTTP SERVER USING EXPRESS
 const server = http.createServer(app);
 
 //INITIALIZATION SOCKET.IO WITH SERVER
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
+});
 
 //DEFINE THE BEGINING ROUTE
 app.get('/', (req, res) => {
@@ -39,3 +50,5 @@ io.on('connection', (socket) => {
 server.listen(4000, () => {
   console.log('Server is running on http://localhost:4000');
 });
+
+
