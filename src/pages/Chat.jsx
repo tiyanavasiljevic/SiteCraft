@@ -2,18 +2,27 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import "./Chat.css";
+import { useAuth } from '../context/AuthContext';
+
 
 //RELATING SOCKET&SERVER
-const socket = io("http://localhost:4000");
+const socket = io("http://localhost:4000", { 
+
+  reconnection: true, // automatic connection
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000, 
+  timeout: 20000, 
+});
 
 const Chat = () => {
+  const { user } = useAuth();
+
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isEmojiPickerVisible, setEmojiPickerVisible] = useState(false);
-  //USERNAME
-  const [userName, setUserName] = useState("User");
 
-  
+
   useEffect(() => {
     socket.on("receive_message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
@@ -25,11 +34,14 @@ const Chat = () => {
   //FUNCTION FOR MESSAGE SENDING
   const handleSendMessage = () => {
     if (newMessage.trim()) {
-      const message = { user: userName, content: newMessage, timestamp: new Date() };
-      //SEND THE MESSAGE TO THE SERVER
+      const message = {
+         user: user?.username || "User",
+          content: newMessage,
+          timestamp: new Date() };
+     
+          //SEND THE MESSAGE TO THE SERVER
       socket.emit("send_message", message);
-      //ADD TO THE CHAT LOCALY
-      setMessages((prevMessages) => [...prevMessages, message]);
+      
       //CLEAN THE INPUT
       setNewMessage(""); 
     }
@@ -44,7 +56,7 @@ const Chat = () => {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h2>Welcome to the Chat</h2>
+        <h2>Welcome to the Chat, {user?.username || "Guest"}</h2>
       </div>
 
       <div className="chat-window">

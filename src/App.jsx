@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import MainLayout from './pages/MainLayout'
+import MainLayout from './components/MainLayout'
 import Dashboard from './pages/Dashboard'
 import Chat from './pages/Chat'
 import SendMail from './pages/SendMail'

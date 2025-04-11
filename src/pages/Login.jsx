@@ -1,11 +1,17 @@
+
 import React from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
+import { useState } from 'react';
 
+
+//LOGIN FUNCTION
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
    const navigate = useNavigate();
+   const { login } = useAuth(); 
     
    const handleSubmit = async (e) => {
       e.preventDefault();
@@ -14,16 +20,22 @@ function Login() {
 
     try {
       const response = await axios.post('http://localhost:4000/api/login', { email, password });
-      localStorage.setItem('token', response.data.token); // STORE TOKEN TO LOCALSTORAGE
-  } catch (error) {
-      console.error(error);
+      const token = response.data.token;// STORE TOKEN TO LOCALSTORAGE
+      
+      localStorage.setItem('token', token);
+      login(token);
+      
+      navigate('/dashboard'); 
+  
+    } catch (error) {
+      console.error('Login error:',error);
   }
 };
   
     return (
       <div>
         <h2>Log In</h2>
-        <Form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <input
             type="email"
             placeholder="Email"
@@ -37,7 +49,7 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit">Log In</button>
-        </Form>
+        </form>
       </div>
     );
   }
