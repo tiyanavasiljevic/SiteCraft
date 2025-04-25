@@ -5,17 +5,19 @@ import "./Chat.css";
 import { useAuth } from '../context/AuthContext';
 
 
+
+
 //RELATING SOCKET&SERVER
-const socket = io("http://localhost:4000", { 
+const socket = io("http://localhost:4000", {
 
   reconnection: true, // automatic connection
   reconnectionAttempts: 5,
   reconnectionDelay: 1000,
-  reconnectionDelayMax: 5000, 
-  timeout: 20000, 
+  reconnectionDelayMax: 5000,
+  timeout: 20000,
 });
 
-const Chat = () => {
+const Chat = ({ isMini = false }) => {
   const { user } = useAuth();
 
   const [messages, setMessages] = useState([]);
@@ -27,7 +29,7 @@ const Chat = () => {
     socket.on("receive_message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
-//CLEAN THE EVENT WHEN UNMOUNT COMPONENT
+    //CLEAN THE EVENT WHEN UNMOUNT COMPONENT
     return () => socket.off("receive_message");
   }, []);
 
@@ -35,15 +37,16 @@ const Chat = () => {
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       const message = {
-         user: user?.username || "User",
-          content: newMessage,
-          timestamp: new Date() };
-     
-          //SEND THE MESSAGE TO THE SERVER
+        user: user?.username || "User",
+        content: newMessage,
+        timestamp: new Date()
+      };
+
+      //SEND THE MESSAGE TO THE SERVER
       socket.emit("send_message", message);
-      
+
       //CLEAN THE INPUT
-      setNewMessage(""); 
+      setNewMessage("");
     }
   };
 
@@ -52,6 +55,25 @@ const Chat = () => {
     setNewMessage(newMessage + emoji.native);
     setEmojiPickerVisible(false);
   };
+
+  useEffect(() => {
+    // Fetch the last 10 messages from the backend
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/api/messages");
+        const data = await response.json();
+
+        // TAKE LAST 10 MESSAGES
+        const lastTen = data.slice(-10);
+
+        setMessages(lastTen);
+      } catch (err) {
+        console.error("Greška pri učitavanju poruka:", err);
+      }
+    };
+
+    fetchMessages();
+  }, []);
 
   return (
     <div className="chat-container">
@@ -83,9 +105,7 @@ const Chat = () => {
           className="emoji-button"
           onClick={() => setEmojiPickerVisible(!isEmojiPickerVisible)}
         >
-          😀
         </button>
-
         {isEmojiPickerVisible && (
           <div className="emoji-picker">
             <EmojiPicker onSelect={handleEmojiSelect} />

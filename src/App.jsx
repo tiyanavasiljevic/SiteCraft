@@ -6,6 +6,7 @@ import Chat from './pages/Chat'
 import SendMail from './pages/SendMail'
 import LogIn from './pages/Login'
 import Register from './pages/Register'
+import Home from './pages/Home';
 import './App.css'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />}/>
             <Route path="Dashboard" element={<Dashboard />} />
             <Route path="Chat" element={<Chat />} />
             <Route path="SendMail" element={<SendMail />} />
@@ -28,7 +30,7 @@ function App() {
     </BrowserRouter>
 </div>
     
-  )
+  );
 }
 
 export default App;

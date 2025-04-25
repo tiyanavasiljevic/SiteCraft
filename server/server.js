@@ -47,6 +47,15 @@ mongoose.connect(dbURI)
   //CREATE USER MODEL
   const User = mongoose.model('User', userSchema);
 
+  // MESSAGE SCHEMA I MODEL
+const messageSchema = new mongoose.Schema({
+  user: { type: String, required: true },
+  content: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
+});
+
+const Message = mongoose.model('Message', messageSchema);
+
 
 //INITIALIZATION
 const app = express();
@@ -110,6 +119,8 @@ app.post('/api/register',  [
   }
 });
 
+
+
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -152,6 +163,30 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// GET ALL MESSAGES
+app.get('/api/messages', async (req, res) => {
+  try {
+    const messages = await Message.find().sort({ timestamp: 1 });
+    res.json(messages);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch messages', error: err.message });
+  }
+});
+
+app.post('/api/test-message', async (req, res) => {
+  try {
+    const newMessage = new Message({
+      user: "Test User",
+      content: "Ovo je test poruka",
+    });
+
+    await newMessage.save();
+    res.status(201).json({ message: "Test message added!" });
+  } catch (err) {
+    res.status(500).json({ message: 'Error adding test message', error: err.message });
+  }
+});
+
 
 
 //DEFINE THE BEGINING ROUTE
@@ -164,10 +199,15 @@ io.on('connection', (socket) => {
   console.log('A user connected');
 
   //SENDING EVENT
-  socket.on('send_message', (message) => {
-    
-//EMMITING MESSAGE TO ALL USERS
-    io.emit('receive_message', message);
+  socket.on('send_message', async (message) => {
+    try {
+      const newMessage = new Message(message);
+      await newMessage.save();
+  
+      io.emit('receive_message', message);
+    } catch (err) {
+      console.error('Error saving message:', err.message);
+    }
   });
 
 
