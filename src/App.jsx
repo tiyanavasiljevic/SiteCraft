@@ -8,28 +8,35 @@ import LogIn from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home';
 import './App.css'
+import ProtectedRoute from './components/ProtectedRoutes';
 
 function App() {
   const [count, setCount] = useState(0)
 
-      
 
-    return (
+
+  return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MainLayout />}>
-          <Route index element={<Home />}/>
+
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="Login" element={<LogIn />} />
+          <Route path="Register" element={<Register />} />
+
+
+          <Route element={<ProtectedRoute />}>
             <Route path="Dashboard" element={<Dashboard />} />
             <Route path="Chat" element={<Chat />} />
             <Route path="SendMail" element={<SendMail />} />
-            <Route path="Login" element={<LogIn />} />
-            <Route path="Register" element={<Register />} />
           </Route>
-    </Routes>
-    </BrowserRouter>
-</div>
-    
+          </Route>
+        </Routes>
+        
+      </BrowserRouter>
+    </div>
+
   );
 }
 

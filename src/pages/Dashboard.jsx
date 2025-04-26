@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Canvas from '../components/Canvas';
 import Chat from './Chat';
@@ -8,6 +10,7 @@ import EditStyleBar from '../components/EditStyleBar';
 import { v4 as uuidv4 } from 'uuid';
 import { useMemo } from 'react';
 import html2canvas from 'html2canvas';
+
 
 
 

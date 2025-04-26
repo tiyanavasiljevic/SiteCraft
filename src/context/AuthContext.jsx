@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 
 
@@ -9,6 +9,21 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
+
+   useEffect(() => {
+    const savedToken = localStorage.getItem('token');
+    if (savedToken) {
+      try {
+        const decoded = jwtDecode(savedToken);
+        setUser(decoded); 
+        setToken(savedToken);
+      } catch (err) {
+        console.error("Greška pri dekodiranju tokena:", err.message);
+        localStorage.removeItem('token');
+      }
+    }
+  }, []);
+
 
   //LOGIN FUNCTION
   const login = (token) => {
@@ -44,13 +59,11 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 // CUSTOM HOOK
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () =>  useContext(AuthContext);
