@@ -19,7 +19,7 @@ function Register() {
     e.preventDefault();
 
     try {
-      await axios.post('http://localhost:4000/api/register', {
+      await axios.post('http://localhost:4000/api/auth/register', {
         username,
         email,
         password
