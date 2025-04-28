@@ -66,24 +66,24 @@ Modular structure: models, controllers, routes, and config
 
 # App appearance
 
-![Homepage](./src/assets/homepage.png)
+![Homepage]()
 
-![Dashboard](./src/assets/Dashboard.png)
+![Dashboard](./public/images/Dashboard.png)
 
-![Chat](./src/assets/Chat.png)
+![Chat](./public//images/Chat.png)
 
-![App in use](./src/assets/APPINUSE.png)
+![App in use](./public/images/APPINUSE.png)
 
-![Chat & Dashboard in use](./src/assets/CHATANDDASHINUSE.png)
+![Chat & Dashboard in use](./public/images/CHATANDDASHINUSE.png)
 
-![Register](./src/assets/Register.png)
+![Register](./public/images/Register.png)
 
-![Log in](./src/assets/LogIn.png)
+![Log in](./public/images/LogIn.png)
 
 
 # Used packages
 
-Backend
+#Backend
 
 Express (Express Docs) – Web framework for building APIs with Node.js.
 
@@ -104,7 +104,7 @@ CORS (CORS Docs) – For enabling Cross-Origin Resource Sharing in the backend.
 Dotenv (Dotenv Docs) – For loading environment variables.
 
 
-Utilities:
+#Utilities:
 Html2Canvas (HTML2Canvas Docs) – For rendering HTML elements into images.
 
 Html-to-Image (HTML to Image Docs) – For converting HTML elements to images.
@@ -113,7 +113,7 @@ Downloadjs (Download.js Docs) – For downloading files from the browser.
 
 Uuid (UUID Docs) – For generating unique IDs.
 
-Frontend
+#Frontend
 
 React (React Docs) – A JavaScript library for building user interfaces.
 
