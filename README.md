@@ -1,6 +1,6 @@
 # SITECRAFT
 
-![Homepage](./src/assets/homepage.png)
+![Homepage](./public/images/homepage.png)
 
 Sitecraft is a powerful application that allows users to quickly and easily create, design, and personalize websites through an intu
 itive interface. It provides all the necessary tools for professionals and amateur designers to create modern website look. In addition, the application includes an integrated chat feature, allowing teams and users to communicate and exchange ideas in real-time while working on the design.
