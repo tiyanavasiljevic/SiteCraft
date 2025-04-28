@@ -111,19 +111,6 @@ const DraggableElement = ({
           />
         );
 
-      case 'video':
-        return (
-          <iframe
-            src={el.content}
-            style={{ width: '100%', height: '100%', border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        );
-
-
-
       default:
         return null;
     }

@@ -1,9 +1,8 @@
 
-import React, { useRef } from 'react'; // ← dodaj useRef ovde
+import React, { useRef } from 'react'; 
 import { v4 as uuidv4 } from 'uuid';
-import { Button, Container, Row, Col, Form } from 'react-bootstrap';
-import * as htmlToImage from 'html-to-image';
-import download from 'downloadjs';
+import { Button, Row, Col} from 'react-bootstrap';
+
 
 
 
@@ -44,7 +43,7 @@ const Sidebar = ({ onAddElement, saveCanvas }) => {
 
   return (
     <div className="p-3 bg-light border-end" style={{ minWidth: '250px' }}>
-      <h4 className="mb-3">Element Tools</h4>
+      <h4 className="mb-3">TOOLS</h4>
 
 
       <div className="mb-4">
@@ -106,7 +105,6 @@ const Sidebar = ({ onAddElement, saveCanvas }) => {
 
           <Col xs={12}><Button variant="warning" onClick={handleAddImageClick} className="w-100">Add Image</Button></Col>
           <Col xs={12}><Button variant="warning" onClick={() => onAddElement('div')} className="w-100">Add Division</Button></Col>
-          <Col xs={12}><Button variant="warning" onClick={() => onAddElement('video')} className="w-100">Add Video</Button></Col>
           <Col xs={12}><Button variant="warning" onClick={() => onAddElement('map')} className="w-100">Add Map</Button></Col>
           <Col xs={12}><Button variant="danger" onClick={saveCanvas} className="w-100 mt-3">
             Save Canvas as JPG
