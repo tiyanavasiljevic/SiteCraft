@@ -66,7 +66,7 @@ Modular structure: models, controllers, routes, and config
 
 # App appearance
 
-![Homepage]()
+![Homepage](./public/images/homepage.png)
 
 ![Dashboard](./public/images/Dashboard.png)
 

@@ -41,6 +41,14 @@ Thumbs.db
 *.mp4
 *.rar
 
+!public/images/APPINUSE.png
+!public/images/Chat.png
+!public/images/CHATANDDASHINUSE.png
+!public/images/Dashboard.png
+!public/images/homepage.png
+!public/images/LogIn.png
+!public/images/Register.png
+
 .vscode/
 .idea/
 
