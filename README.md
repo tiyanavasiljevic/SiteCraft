@@ -147,15 +147,19 @@ The backend is powered by Node.js and Express, following the MVC architecture fo
 
  To start backend:
 
-cd backend
-node server.js
+ - cd backend
+ - npm install
+ - node server.js
 
 # Frontend 
 
 To start frontend:
 
-npm install
-npm run dev
+- cd SiteCraft
+- npm install
+- npm run dev
+
+
 
 
 
