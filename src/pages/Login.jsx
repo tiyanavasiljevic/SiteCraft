@@ -16,9 +16,26 @@ function Login() {
   const { login } = useAuth();
 
 
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    if (!email || !emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+
+    if (!password || !passwordRegex.test(password)) {
+      setError('Password must be at least 6 characters long, include one number and one special character.');
+      return;
+    }
 
 
 

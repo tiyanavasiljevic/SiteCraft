@@ -135,7 +135,7 @@ const DraggableElement = ({
         cursor: 'move',
 
         backgroundColor: el.style.backgroundColor || 'transparent',
-        zIndex: isSelected ? 10 : el.style.zIndex,
+        zIndex: isSelected ? 10 : (isNaN(Number(el.style.zIndex)) ? 1 : Number(el.style.zIndex)),
 
       }}
     >

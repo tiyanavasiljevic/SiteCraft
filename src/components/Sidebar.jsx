@@ -1,13 +1,10 @@
 
-import React, { useRef } from 'react'; 
+import React, { useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Button, Row, Col} from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 
 
-
-
-
-const Sidebar = ({ onAddElement, saveCanvas }) => {
+const Sidebar = ({ onAddElement, saveCanvas, onResetCanvas }) => {
   const fileInputRef = useRef(null);
 
   const handleAddImageClick = () => {
@@ -108,6 +105,10 @@ const Sidebar = ({ onAddElement, saveCanvas }) => {
           <Col xs={12}><Button variant="warning" onClick={() => onAddElement('map')} className="w-100">Add Map</Button></Col>
           <Col xs={12}><Button variant="danger" onClick={saveCanvas} className="w-100 mt-3">
             Save Canvas as JPG
+          </Button>
+          </Col>
+          <Col xs={12}> <Button onClick={onResetCanvas} className="btn btn-danger mt-2">
+            Reset Canvas
           </Button>
           </Col>
         </Row>

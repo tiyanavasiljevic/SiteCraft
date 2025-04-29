@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import Canvas from '../components/Canvas';
 import Chat from './Chat';
@@ -12,18 +10,38 @@ import { useMemo } from 'react';
 import html2canvas from 'html2canvas';
 
 
-
-
-
-
-
-
 const Dashboard = () => {
 
   const [elements, setElements] = useState([]);
   const [selectedElementId, setSelectedElementId] = useState(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [zIndexCounter, setZIndexCounter] = useState(1);
+
+
+  const resetCanvas = () => {
+    setElements([]);
+    setSelectedElementId(null);
+    localStorage.removeItem('elements');
+    setZIndexCounter(1);
+  };
+
+
+  useEffect(() => {
+    const savedElements = localStorage.getItem('elements');
+    if (savedElements) {
+      setElements(JSON.parse(savedElements));
+
+      const maxZIndex = Math.max(...JSON.parse(savedElements).map(el => el.style.zIndex), 0);
+      setZIndexCounter(maxZIndex + 1);
+    }
+  }, []);
+
+
+  useEffect(() => {
+    if (elements.length > 0) {
+      localStorage.setItem('elements', JSON.stringify(elements));
+    }
+  }, [elements]);
 
   const saveCanvasAsImage = () => {
     const canvasEl = document.querySelector('.canvas');
@@ -50,7 +68,7 @@ const Dashboard = () => {
           : el
       )
     );
-    setZIndexCounter((prev) => prev + 1);
+    setZIndexCounter((prev) => (isNaN(prev) ? 1 : prev + 1));
   };
 
 
@@ -164,6 +182,7 @@ const Dashboard = () => {
             onDeleteElement={deleteElement}
             onContentChange={updateContent}
             saveCanvas={saveCanvasAsImage}
+            onResetCanvas={resetCanvas}
           />
         </Col>
 
