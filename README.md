@@ -140,6 +140,9 @@ The backend is powered by Node.js and Express, following the MVC architecture fo
 
  # App Running
 
+ # Clone the repo
+ git clone https://github.com/tiyanavasiljevic/SiteCraft.git
+
  # Backend
 
  To start backend:
