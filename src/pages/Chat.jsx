@@ -17,7 +17,7 @@ const socket = io("http://localhost:4000", {
   timeout: 20000,
 });
 
-const Chat = ({ isMini = false }) => {
+const Chat = () => {
   const { user } = useAuth();
 
   const [messages, setMessages] = useState([]);
