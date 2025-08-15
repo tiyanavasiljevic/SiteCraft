@@ -1,4 +1,5 @@
 # SITECRAFT
+# a final project for Code Academy by Comtrade
 
 ![Homepage](./public/images/homepage.png)
 
