@@ -9,23 +9,28 @@ import messageRoutes from './routes/messageRoutes.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 const app = express();
 
-app.use(cors());
+
+app.use(cors({
+  origin: '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 app.use(express.json());
 
-// API rute
+// 2. API RUTE
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
 
-// 🚀 Serviranje frontenda iz dist foldera
-//app.use(express.static(path.join(__dirname, 'dist')));
+// 3. TEST RUTA
 
-// 🎯 Ako ruta nije API, vrati index.html (SPA fallback)
-//app.get('*', (req, res) => {
-  //res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-//});
+app.get('/', (req, res) => {
+  res.send("Server is running and healthy! 🚀");
+});
 
-app.get('/', (req, res) => {res.send("server is free")});
+
+
 export default app;

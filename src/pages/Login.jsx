@@ -1,13 +1,12 @@
-
-import React from "react";
+import React, { useState } from "react"; // Grupisani importi
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
-import { useState } from 'react';
 import { Form, Button, Container, Alert } from "react-bootstrap";
 
+// 1. Definišemo bazu URL-a koja se menja zavisno od okruženja
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
-//LOGIN FUNCTION
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,40 +14,41 @@ function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-
-
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // Resetujemo grešku na početku
 
-
+    // Validacija
     if (!email || !emailRegex.test(email)) {
       setError('Please enter a valid email address.');
       return;
     }
-
 
     if (!password || !passwordRegex.test(password)) {
       setError('Password must be at least 6 characters long, include one number and one special character.');
       return;
     }
 
-
-
     try {
-      const response = await axios.post('http://localhost:4000/api/auth/login', { email, password });
-      const token = response.data.token;// STORE TOKEN TO LOCALSTORAGE
+      // 2. KORISTIMO API_BASE_URL varijablu umesto localhost-a
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { 
+        email, 
+        password 
+      });
 
+      const token = response.data.token;
       localStorage.setItem('token', token);
       login(token);
-
       navigate('/dashboard');
 
     } catch (error) {
+      // 3. BOLJE RUKOVANJE GREŠKAMA
+      // Ako backend vrati grešku (npr. pogrešna lozinka), prikaži tu poruku
+      const errorMessage = error.response?.data?.message || 'Login failed. Please check your credentials.';
+      setError(errorMessage);
       console.error('Login error:', error);
     }
   };
@@ -89,7 +89,6 @@ function Login() {
         </Form>
       </div>
     </Container>
-
   );
 }
 

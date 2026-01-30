@@ -1,39 +1,35 @@
-
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import "./Chat.css";
 import { useAuth } from '../context/AuthContext';
 
+// 1. Dinamički URL za Socket i API
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
-
-
-//RELATING SOCKET&SERVER
-const socket = io("http://localhost:4000", {
-
-  reconnection: true, // automatic connection
+// INICIJALIZACIJA SOCKET-A
+const socket = io(API_BASE_URL, {
+  reconnection: true,
   reconnectionAttempts: 5,
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,
   timeout: 20000,
+  transports: ['websocket'] //stability on render
 });
 
 const Chat = () => {
   const { user } = useAuth();
-
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isEmojiPickerVisible, setEmojiPickerVisible] = useState(false);
-
 
   useEffect(() => {
     socket.on("receive_message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
-    //CLEAN THE EVENT WHEN UNMOUNT COMPONENT
+    
     return () => socket.off("receive_message");
   }, []);
 
-  //FUNCTION FOR MESSAGE SENDING
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       const message = {
@@ -42,30 +38,24 @@ const Chat = () => {
         timestamp: new Date()
       };
 
-      //SEND THE MESSAGE TO THE SERVER
       socket.emit("send_message", message);
-
-      //CLEAN THE INPUT
       setNewMessage("");
     }
   };
 
-  //FUNCTION EMOJI PICKER==NOT WORKING BEACUSE OF THE PROBLEMS WITH VERSIONS
   const handleEmojiSelect = (emoji) => {
     setNewMessage(newMessage + emoji.native);
     setEmojiPickerVisible(false);
   };
 
   useEffect(() => {
-    // Fetch the last 10 messages from the backend
     const fetchMessages = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/messages");
+        // 2. KORISTIMO API_BASE_URL umesto localhost-a
+        const response = await fetch(`${API_BASE_URL}/api/messages`);
         const data = await response.json();
 
-        // TAKE LAST 10 MESSAGES
         const lastTen = data.slice(-10);
-
         setMessages(lastTen);
       } catch (err) {
         console.error("Greška pri učitavanju poruka:", err);
@@ -105,10 +95,11 @@ const Chat = () => {
           className="emoji-button"
           onClick={() => setEmojiPickerVisible(!isEmojiPickerVisible)}
         >
+          😊
         </button>
         {isEmojiPickerVisible && (
           <div className="emoji-picker">
-            <EmojiPicker onSelect={handleEmojiSelect} />
+            
           </div>
         )}
       </div>
@@ -117,5 +108,3 @@ const Chat = () => {
 };
 
 export default Chat;
-
-
